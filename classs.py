@@ -53,7 +53,7 @@ class Init:
         self.erase_button = False
         self.x = False
 
-        self.intero_buttons = {"show BF": True, "show BR": False, "make BFN": False, "Restriction": (False, False, None, False), "Copy": (False, (False, None), (False, None), None),
+        self.intero_buttons = {"show BF": True, "show BR": False, "make BFN": False, "auto BFN": False, "Restriction": (False, False, None, False), "Copy": (False, (False, None), (False, None), None),
                                "jointure": (False, (False, None), (False, None)), "fragmentation": (False, (False, None), False)}
         self.time = time.time()
         self.error = False, None
@@ -62,6 +62,9 @@ class Init:
         self.Restriction_saved_ref = None
 
         self.make_bfn_offset = 0
+
+        self.BFN = None
+        self.auto_bfn_offset = 0
 
 
 class Concept:
