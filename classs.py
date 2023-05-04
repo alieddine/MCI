@@ -5,6 +5,7 @@ import pygame
 
 class Init:
     def __init__(self):
+        self.bfn = []
         self.mouse = None
         self.font = pygame.font.Font('images/cc-ultimatum-bold.otf', 15)
         self.font3 = pygame.font.Font('images/cc-ultimatum-bold.otf', 32)
@@ -29,14 +30,13 @@ class Init:
         self.new_arc_point2 = False, None
         self.add_new_fait = False, []
 
+        self.new_fait = False, False, []
+
         self.bf_interface = False
         self.offset_bf_list = 0
         self.bf_interface_offset = 0
-        self.bf_main_list = []
-        self.bf_arc_array = []
-        self.bf_list_rect = []
-        self.bf_array = []
-        self.bf_save_cancel = []
+
+        self.bf_save_cancel = None
 
         self.br_interface = False
         self.offset_br_list = 0
@@ -83,4 +83,6 @@ class Relation:
         self.y = y
         self.name = name
         self.arcs = []
+        self.arcs_back = []
+
 

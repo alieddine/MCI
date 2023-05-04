@@ -24,13 +24,12 @@ def main():
     c1.arcs.append(r1)
     c2.arcs.append(r2)
     r1.arcs.append(c2)
-    c2.arcs_back.append(r1)
     r2.arcs.append(c3)
+    c2.arcs_back.append(r1)
+    r1.arcs_back.append(c1)
+    r2.arcs_back.append(c2)
     c3.arcs_back.append(r2)
-    init.bf_main_list = [
-        [c1, r1, c2],
-        [c2, r2, c3]
-    ]
+    init.bfn = [c1, c2, c3, r1, r2]
     error_time = time.time()
     while True:
 
@@ -54,7 +53,11 @@ def main():
                 elif not init.bf_interface and not init.br_interface and 80 + 10 + init.font2.size("edit")[0] <= init.mouse[0] <= 80 + 10 + init.font2.size("edit")[0] + 30 + init.font2.size("interro")[0] and 0 <= init.mouse[1] <= 30:
                     init.edit_display = False
                     init.interro_display = True
-                    init.bfn_fun = init.bf_main_list.copy()
+                    # arr = objs_to_faits(init.bfn)
+                    # init.bfn_fun = Copy(arr)
+                    init.bfn_fun = Copy_new(init.bfn)
+                    # init.bfn_fun = get_objs(init.bfn_fun)
+
                 elif init.edit_display:
                     if init.bf_interface:
                         if init.new_concept:
@@ -74,19 +77,15 @@ def main():
                                     init.new_concept_ref_typing = False
 
                                     # init.new_concept = False
-                                    rect = Rect(init.new_concept_in[1][0], init.new_concept_in[1][1], 20 + init.font2.size(init.new_concept_name + " : " + init.new_concept_ref)[0], 40)
-                                    init.bf_list_rect.append(rect)
+
                                     concept = Concept(init.new_concept_in[1][0], init.new_concept_in[1][1], init.new_concept_name, init.new_concept_ref)
-                                    init.bf_array.append(concept)
+                                    init.bfn.append(concept)
                                     init.new_concept_in = False, (0, 0)
-
-
 
                             elif 82 <= init.mouse[0] <= 82 + screen.get_width() * 0.6 and screen.get_height() * 0.05 <= init.mouse[1] <= screen.get_height() * 0.05 + screen.get_height() * 0.9:
                                 init.new_concept_in = True, (init.mouse[0], init.mouse[1] - init.bf_interface_offset)
 
                             else:
-                                # red mouse to reference an error
                                 init.error = True, "error : needs to place it inside the container"
                                 error_time = time.time()
                                 break
@@ -100,10 +99,8 @@ def main():
                                     1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + screen.get_height() * 0.3 - 70 + 30:
                                     init.new_relation_name_typing = False
                                     # init.new_relation = False
-                                    rect = Rect(init.new_relation_in[1][0], init.new_relation_in[1][1], 20 + init.font2.size(init.new_relation_name)[0], 40)
-                                    init.bf_list_rect.append(rect)
                                     relation = Relation(init.new_relation_in[1][0], init.new_relation_in[1][1], init.new_relation_name)
-                                    init.bf_array.append(relation)
+                                    init.bfn.append(relation)
                                     init.new_relation_in = False, (0, 0)
                             elif 82 <= init.mouse[0] <= 82 + screen.get_width() * 0.6 and screen.get_height() * 0.05 <= init.mouse[1] <= screen.get_height() * 0.05 + screen.get_height() * 0.9:
                                 init.new_relation_in = True, (init.mouse[0], init.mouse[1] - init.bf_interface_offset)
@@ -115,180 +112,126 @@ def main():
                         elif init.new_arc:
                             if 82 <= init.mouse[0] <= 82 + screen.get_width() * 0.6 and screen.get_height() * 0.05 <= init.mouse[1] <= screen.get_height() * 0.05 + screen.get_height() * 0.9:
                                 rect = Rect(init.mouse[0], init.mouse[1] - init.bf_interface_offset, 1, 1)
-                                collide = pygame.Rect.collidelist(rect, init.bf_list_rect)
+                                bfn_rects = get_rects(init.bfn, init)
+                                collide = pygame.Rect.collidelist(rect, bfn_rects)
                                 if collide != -1:
-                                    if init.new_arc_point1[0]:
-                                        if len(init.add_new_fait[1]) == 1:
-                                            if type(init.bf_array[collide]) == Relation:
-                                                if len(init.bf_array[collide].arcs) == 0:
-                                                    init.add_new_fait[1].append(init.bf_array[collide])
-                                                    init.add_new_fait = True, init.add_new_fait[1]
-                                                else:
-                                                    print("error : relation can be only between 2 concept ")
-                                                    init.error = True, "error : relation can be only between 2 concept"
-                                                    error_time = time.time()
-                                                    break
-                                            else:
-                                                print("error : needs to be concept ===> relation")
-                                                init.error = True, "error : needs to be concept ===> relation"
-                                                error_time = time.time()
-                                                break
+                                    if not init.new_fait[0]:
+                                        if type(init.bfn[collide]) == Concept:
+                                            init.new_fait = True, False, [init.bfn[collide]]
+                                        elif type(init.bfn[collide]) == Relation:
+                                            print("error : needs to be concept ===> relation")
+                                            init.error = True, "error : needs to be concept ===> relation"
+                                            error_time = time.time()
+                                            break
                                         else:
-                                            if type(init.bf_array[collide]) == Concept:
-                                                init.add_new_fait[1].append(init.bf_array[collide])
-                                                init.add_new_fait = True, init.add_new_fait[1]
-                                                init.bf_main_list.append(init.add_new_fait[1])
-                                                print("bf list : ", init.bf_main_list)
-                                                init.add_new_fait = False, None
-                                            else:
-                                                print("error : needs to be relation ===> concept")
-                                                init.error = True, "error : needs to be relation ===> concept"
-                                                error_time = time.time()
-                                                break
+                                            print("error : you need to select a concept in the container")
+                                            init.error = True, "error : you need to select a concept in the container"
+                                            error_time = time.time()
+                                            break
 
-                                        obj = init.bf_list_rect[collide]
-                                        init.new_arc_point2 = True, obj
-                                        init.bf_arc_array.append([init.new_arc_point1[1], init.new_arc_point2[1]])
-                                        init.new_arc_point1 = False, None
-                                        # init.new_arc = False
-                                        init.arc_with.arcs.append(init.bf_array[collide])
-                                        if type(init.bf_array[collide]) == Concept: init.bf_array[collide].arcs_back.append(init.arc_with)
-                                        init.arc_with = init.bf_array[collide]
-
-                                        # if init.bf_add_new_fait[0] == False:
-                                        #     init.bf_arc_array = []
-                                        #     if init.bf_add_new_fait[1][0] in init.bf_array:
-                                        #         init.bf_list_rect.pop(init.bf_array.index(init.bf_add_new_fait[1][0]))
-                                        #         init.bf_array.remove(init.bf_add_new_fait[1][0])
-                                        #     if init.bf_add_new_fait[1][1] in init.bf_array:
-                                        #         init.bf_list_rect.pop(init.bf_array.index(init.bf_add_new_fait[1][1]))
-                                        #         init.bf_array.remove(init.bf_add_new_fait[1][1])
-                                        #     if init.bf_add_new_fait[1][2] in init.bf_array:
-                                        #         init.bf_list_rect.pop(init.bf_array.index(init.bf_add_new_fait[1][2]))
-                                        #         init.bf_array.remove(init.bf_add_new_fait[1][2])
-                                        #     init.bf_add_new_fait = False, None
                                     else:
-                                        if not init.add_new_fait[0]:
-                                            if type(init.bf_array[collide]) == Concept:
-                                                init.add_new_fait = True, [init.bf_array[collide]]
+                                        if not init.new_fait[1]:
+                                            if len(init.new_fait[2]) == 1:
+                                                if type(init.bfn[collide]) == Relation:
+                                                    if len(init.bfn[collide].arcs) == 0:
+                                                        print(init.new_fait)
+                                                        init.new_fait[2].append(init.bfn[collide])
+                                                        init.new_fait = True, False, init.new_fait[2]
+                                                        print(init.new_fait)
+                                                    else:
+                                                        print("error : relation can be only between 2 concept")
+                                                        init.error = True, "error : relation can be only between 2 concept"
+                                                        error_time = time.time()
+                                                        break
+                                                else:
+                                                    print("error : needs to be concept ===> relation")
+                                                    init.error = True, "error : needs to be concept ===> relation"
+                                                    error_time = time.time()
+                                                    break
                                             else:
-                                                print("error : needs to be concept ===> relation")
-                                                init.error = True, "error : needs to be concept ===> relation"
-                                                error_time = time.time()
-                                                break
-                                        else:
-                                            if type(init.bf_array[collide]) == Relation:
-                                                if not init.add_new_fait[1][-1] == init.bf_array[collide]:
-                                                    print("needs to be same relation")
-                                                    init.error = True, "error : needs to be same relation"
+                                                if type(init.bfn[collide]) == Relation:
+                                                    if init.bfn[collide] == init.new_fait[2][1]:
+                                                        init.new_fait = True, True, init.new_fait[2]
+                                                    else:
+                                                        print("needs to be same relation")
+                                                        init.error = True, "error : needs to be same relation"
+                                                        error_time = time.time()
+                                                        break
+
+                                                else:
+                                                    print("error : needs to be relation ===> concept")
+                                                    init.error = True, "error : needs to be relation ===> concept"
                                                     error_time = time.time()
                                                     break
 
-                                            else:
+                                        else:
+                                            if type(init.bfn[collide]) == Concept:
+                                                init.new_fait[2].append(init.bfn[collide])
+                                                init.new_fait = False, False, init.new_fait[2]
+                                                fait = init.new_fait[2]
+                                                fait[0].arcs.append(fait[1])
+                                                fait[1].arcs.append(fait[2])
+                                                fait[1].arcs_back.append(fait[0])
+                                                fait[2].arcs_back.append(fait[1])
+                                                init.new_fait = False, False, []
+                                            elif type(init.bfn[collide]) == Relation:
                                                 print("error : needs to be relation ===> concept")
                                                 init.error = True, "error : needs to be relation ===> concept"
                                                 error_time = time.time()
                                                 break
-                                        obj = init.bf_list_rect[collide]
-                                        init.new_arc_point1 = True, obj
-                                        init.arc_with = init.bf_array[collide]
+                                            else:
+                                                print("error : you need to select a concept in the container")
+                                                init.error = True, "error : you need to select a concept in the container"
+                                                error_time = time.time()
+                                                break
 
                         elif 40 + screen.get_width() * 0.6 <= init.mouse[0] <= 40 + screen.get_width() * 0.6 + 20 and 10 + screen.get_height() * 0.05 <= init.mouse[1] <= 10 + screen.get_height() * 0.05 + 20:
                             init.erase_button = not init.erase_button
-                            for element in init.bf_array:
-                                print("name : ", element.name, "-----------------")
-                                for e in element.arcs:
-                                    print("element.arcs : ", e.name)
-                                if type(element) == Concept:
-                                    for e in element.arcs_back:
-                                        print("element.arcs_back : ", e.name)
-
 
                         elif init.erase_button:
                             rect = Rect(init.mouse[0], init.mouse[1] - init.bf_interface_offset, 1, 1)
-                            collide = pygame.Rect.collidelist(rect, init.bf_list_rect)
+                            bfn_rec = get_rects(init.bfn, init)
+                            collide = pygame.Rect.collidelist(rect, bfn_rec)
                             if not collide == -1:
-                                obj = init.bf_array[collide]
-                                for element in init.bf_main_list:
-                                    if type(element) == Concept:
-                                        if element == obj:
-                                            init.bf_main_list.remove(element)
-                                            init.bf_list_rect.pop(init.bf_array.index(element))
-                                            init.bf_array.remove(element)
-                                    for e in element:
-                                        if type(e) == Concept:
-                                            if e == obj:
-                                                for e1 in element:
-                                                    if type(e1) == Concept:
-                                                        init.bf_main_list.remove(element)
-                                                        init.bf_list_rect.pop(init.bf_array.index(element))
-                                                        init.bf_array.remove(element)
+                                obj = init.bfn[collide]
+                                init.bfn.remove(obj)
+                                for element in init.bfn:
+                                    for e in element.arcs:
+                                        if e == obj:
+                                            if type(element) == Relation:
+                                                element.arcs_back[0].arcs.remove(element)
+                                                element.arcs_back = []
 
+                                            element.arcs.remove(obj)
 
-
-                            #     obj = init.bf_array[collide]
-                            #     c1 = None
-                            #     c2 = None
-                            #     for i in range(len(init.bf_main_list)):
-                            #         if obj == init.bf_main_list[i][0]:
-                            #             c1 = init.bf_main_list[i][1]
-                            #             c2 = init.bf_main_list[i][2]
-                            #             init.bf_main_list.pop(i)
-                            #             break
-                            #         elif obj == init.bf_main_list[i][1]:
-                            #             c1 = init.bf_main_list[i][0]
-                            #             c2 = init.bf_main_list[i][2]
-                            #             init.bf_main_list.pop(i)
-                            #             break
-                            #         elif obj == init.bf_main_list[i][2]:
-                            #             c1 = init.bf_main_list[i][1]
-                            #             c2 = init.bf_main_list[i][0]
-                            #             init.bf_main_list.pop(i)
-                            #             break
-                            #     i = 0
-                            #     if c1 in init.bf_array:
-                            #         init.bf_list_rect.pop(init.bf_array.index(c1))
-                            #         init.bf_array.remove(c1)
-                            #         i += 1
-                            #     if c2 in init.bf_array:
-                            #         init.bf_list_rect.pop(init.bf_array.index(c2) - 1)
-                            #         init.bf_array.remove(c2)
-                            #         i += 1
-                            #     init.bf_list_rect.pop(collide - i)
-                            #     init.bf_array.remove(obj)
-                            #     for element in init.br_array:
-                            #         if obj in element.arcs:
-                            #             element.arcs.remove(obj)
-                            #         if c1 in element.arcs:
-                            #             element.arcs.remove(c1)
-                            #         if c2 in element.arcs:
-                            #             element.arcs.remove(c2)
-
-
-                            else:
-                                break
-
+                                    for e in element.arcs_back:
+                                        if e == obj:
+                                            if type(element) == Relation:
+                                                element.arcs[0].arcs_back.remove(element)
+                                                element.arcs = []
+                                            element.arcs_back.remove(obj)
                         elif 80 + screen.get_width() * 0.6 + screen.get_width() * 0.2 - 80 + 80 - 40 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + screen.get_width() * 0.2 - 80 + 80 - 40 + 80 and screen.get_height() * 0.2 + screen.get_height() * 0.6 - 70 <= init.mouse[
                             1] <= screen.get_height() * 0.2 + screen.get_height() * 0.6 - 70 + 30:
                             init.bf_interface = False
-                            if not len(init.bf_save_cancel) == 0:
-                                init.bf_main_list = init.bf_save_cancel[0]
-                                init.bf_array = init.bf_save_cancel[1]
-                                init.bf_list_rect = init.bf_save_cancel[2]
-                                init.bf_arc_array = init.bf_save_cancel[3]
+                            if init.bf_save_cancel is not None:
+                                init.bfn = init.bf_save_cancel
 
                         elif 80 + screen.get_width() * 0.6 + 80 + 80 - 40 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + 80 - 40 + 80 and screen.get_height() * 0.2 + screen.get_height() * 0.6 - 70 <= init.mouse[1] <= screen.get_height() * 0.2 + screen.get_height() * 0.6 - 70 + 30:
                             init.bf_interface = False
-                            for element in init.bf_array:
-                                if type(element) == Concept and (len(element.arcs) == 0 or len(element.arcs_back) == 0):
-                                    if element not in init.bf_main_list:
-                                        init.bf_main_list.append(element)
+                            relation_to_remove = []
+                            for element in init.bfn:
+                                if type(element) == Relation and len(element.arcs) == 0:
+                                    relation_to_remove.append(element)
+                            for element in relation_to_remove:
+                                init.bfn.remove(element)
 
-                            init.bfn_fun = init.bf_main_list.copy()
-                            init.bf_save_cancel.append(init.bf_main_list.copy())
-                            init.bf_save_cancel.append(init.bf_array.copy())
-                            init.bf_save_cancel.append(init.bf_list_rect.copy())
-                            init.bf_save_cancel.append(init.bf_arc_array.copy())
+                            # arr = objs_to_faits(init.bfn)
+                            # init.bfn_fun = Copy(arr)
+                            # init.bfn_fun = get_objs(init.bfn_fun)
+                            init.bfn_fun = Copy_new(init.bfn)
+
+                            init.bf_save_cancel = init.bfn_fun.copy()
+
                         elif 80 + screen.get_width() * 0.6 + 80 + (screen.get_width() * 0.2) / 2 - 70 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + (screen.get_width() * 0.2) / 2 - 70 + 140 and screen.get_height() * 0.2 + 10 + init.font2.size("Concept")[1] * 2 <= init.mouse[
                             1] <= screen.get_height() * 0.2 + 10 + init.font2.size("Concept")[1] * 2 + 40:
                             init.new_concept = True
@@ -298,6 +241,7 @@ def main():
                         elif 80 + screen.get_width() * 0.6 + 80 + (screen.get_width() * 0.2) / 2 - 70 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + (screen.get_width() * 0.2) / 2 - 70 + 140 and screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 <= init.mouse[
                             1] <= screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 40:
                             init.new_arc = True
+                            init.new_fait = False, False, []
                     elif init.br_interface:
                         if init.new_concept:
                             if init.new_concept_in[0]:
@@ -513,12 +457,14 @@ def main():
 
                 elif init.interro_display:
                     if init.intero_buttons["make BFN"]:
-                        if screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 200 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 200:
+                        if screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 80 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 80:
+                            init.intero_buttons["Restriction"] = True, False, None, False
+                        elif screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 200 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 200:
                             init.intero_buttons["fragmentation"] = True, (False, None), False
                         elif init.intero_buttons["fragmentation"][0]:
                             if not init.intero_buttons["fragmentation"][1][0] and screen.get_width() * 0.05 <= init.mouse[0] <= screen.get_width() * 0.05 + screen.get_width() * 0.7 and screen.get_width() * 0.05 <= init.mouse[1] <= screen.get_width() * 0.05 + screen.get_height() * 0.8:
                                 rect = Rect(init.mouse[0], init.mouse[1], 1, 1)
-                                objs, objs_rect = get_objs_and_rects(screen, init.bfn_fun, init)
+                                objs_rect = get_rects(init.bfn_fun, init, screen.get_width() * 0.05, screen.get_width() * 0.05)
 
                                 collide = pygame.Rect.collidelist(rect, objs_rect)
                                 if collide == -1:
@@ -526,15 +472,15 @@ def main():
                                     error_time = time.time()
                                     init.intero_buttons["fragmentation"] = False, (False, None), False
                                     break
-                                elif type(objs[collide]) == Relation:
+                                elif type(init.bfn_fun[collide]) == Relation:
                                     init.error = True, "error : you can't devide in relations"
                                     error_time = time.time()
                                     init.intero_buttons["fragmentation"] = False, (False, None), False
                                     break
-                                elif type(objs[collide]) == Concept:
+                                elif type(init.bfn_fun[collide]) == Concept:
                                     init.error = True, "concept selected click where to put it"
                                     error_time = time.time()
-                                    init.intero_buttons["fragmentation"] = True, (True, objs[collide]), False
+                                    init.intero_buttons["fragmentation"] = True, (True, init.bfn_fun[collide]), False
                                 else:
                                     init.error = True, "error 1: please click in the container"
                                     error_time = time.time()
@@ -543,35 +489,15 @@ def main():
                             elif init.intero_buttons["fragmentation"][1][0] and screen.get_width() * 0.05 <= init.mouse[0] <= screen.get_width() * 0.05 + screen.get_width() * 0.7 and screen.get_width() * 0.05 <= init.mouse[1] <= screen.get_width() * 0.05 + screen.get_height() * 0.8:
                                 print(init.bfn_fun)
                                 concept = init.intero_buttons["fragmentation"][1][1]
-                                first = False
-                                save_arcs = concept.arcs.copy()
-                                for i, element in enumerate(init.bfn_fun):
-                                    if type(element) == Concept:
-                                        if element == concept:
-                                            if not first:
-                                                init.bfn_fun[i].arcs = []
-                                                first = True
-                                            else:
-                                                init.bfn_fun[i] = copy.deepcopy(concept)
-                                                init.bfn_fun[i].arcs_back = []
-                                                init.bfn_fun[i].arcs = save_arcs
-                                                init.bfn_fun[i].x = init.mouse[0]
-                                                init.bfn_fun[i].y = init.mouse[1]
-                                                break
-                                    else:
-                                        for j, e in enumerate(init.bfn_fun[i]):
-                                            if e == concept:
-                                                if not first:
-                                                    init.bfn_fun[i][j].arcs = []
-                                                    first = True
-
-                                                else:
-                                                    init.bfn_fun[i][j] = copy.deepcopy(concept)
-                                                    init.bfn_fun[i][j].arcs_back = []
-                                                    init.bfn_fun[i][j].arcs = save_arcs
-                                                    init.bfn_fun[i][j].x = init.mouse[0] - screen.get_width() * 0.05
-                                                    init.bfn_fun[i][j].y = init.mouse[1] - screen.get_width() * 0.05
-                                                    break
+                                new_concept = Copy([concept])
+                                for relation in concept.arcs:
+                                    relation.arcs_back = [new_concept]
+                                new_concept.arcs = concept.arcs.copy()
+                                new_concept.arcs_back = []
+                                concept.arcs = []
+                                new_concept.x = init.mouse[0] - screen.get_width() * 0.05
+                                new_concept.y = init.mouse[1] - screen.get_width() * 0.05
+                                init.bfn_fun.append(new_concept)
                                 init.error = True, "finished"
                                 error_time = time.time()
                                 init.intero_buttons["fragmentation"] = False, (False, None), False
@@ -586,34 +512,34 @@ def main():
                         elif init.intero_buttons["jointure"][0]:
                             if not init.intero_buttons["jointure"][1][0]:
                                 rect = Rect(init.mouse[0], init.mouse[1], 1, 1)
-                                objs, objs_rect = get_objs_and_rects(screen, init.bfn_fun, init)
+                                objs_rect = get_rects(init.bfn_fun, init, screen.get_width() * 0.05, screen.get_width() * 0.05)
 
                                 collide = pygame.Rect.collidelist(rect, objs_rect)
                                 if collide == -1:
                                     init.error = True, "error : please select a concept"
                                     error_time = time.time()
-                                elif type(objs[collide]) == Relation:
+                                elif type(init.bfn_fun[collide]) == Relation:
                                     init.error = True, "error : you can't join relations"
                                     error_time = time.time()
-                                elif type(objs[collide]) == Concept:
+                                elif type(init.bfn_fun[collide]) == Concept:
                                     init.error = True, "concept 1 selected"
                                     error_time = time.time()
-                                    init.intero_buttons["jointure"] = True, (True, objs[collide]), (False, None)
+                                    init.intero_buttons["jointure"] = True, (True, init.bfn_fun[collide]), (False, None)
                             elif not init.intero_buttons["jointure"][2][0]:
                                 rect = Rect(init.mouse[0], init.mouse[1], 1, 1)
-                                objs, objs_rect = get_objs_and_rects(screen, init.bfn_fun, init)
+                                objs_rect = get_rects(init.bfn_fun, init, screen.get_width() * 0.05, screen.get_width() * 0.05)
 
                                 collide = pygame.Rect.collidelist(rect, objs_rect)
                                 if collide == -1:
                                     init.error = True, "error : please select a concept"
                                     error_time = time.time()
-                                elif type(objs[collide]) == Relation:
+                                elif type(init.bfn_fun[collide]) == Relation:
                                     init.error = True, "error : you can't join relations"
                                     error_time = time.time()
-                                elif type(objs[collide]) == Concept:
+                                elif type(init.bfn_fun[collide]) == Concept:
                                     init.error = True, "concept 2 selected"
                                     error_time = time.time()
-                                    init.intero_buttons["jointure"] = True, init.intero_buttons["jointure"][1], (True, objs[collide])
+                                    init.intero_buttons["jointure"] = True, init.intero_buttons["jointure"][1], (True, init.bfn_fun[collide])
                             elif init.intero_buttons["jointure"][2][0] and init.intero_buttons["jointure"][1][0]:
                                 if (init.font2.size("do you want to join them")[0] + 100) / 2 - 110 / 2 + 60 + screen.get_width() / 2 - (init.font2.size("do you want to join them")[0] + 50) / 2 <= init.mouse[0] <= (init.font2.size("do you want to join them")[0] + 100) / 2 - 110 / 2 + 60 + 50 + screen.get_width() / 2 - (init.font2.size("do you want to join them")[0] + 50) / 2 and 80 + screen.get_height() * 0.7 <= init.mouse[1] <= 110 + screen.get_height() * 0.7:
                                     init.intero_buttons["jointure"] = False, (False, None), (False, None)
@@ -634,17 +560,12 @@ def main():
                                         for refernce in concept_2.arcs_back:
                                             refernce.arcs.remove(concept_2)
                                             refernce.arcs.append(concept_1)
-                                        print(init.bfn_fun)
+
 
                                         for element in init.bfn_fun:
                                             if type(element) == Concept:
                                                 if element == concept_2:
                                                     init.bfn_fun.remove(element)
-
-                                            else:
-                                                for e in element:
-                                                    if e == concept_2:
-                                                        element.remove(concept_2)
 
                                         print(init.bfn_fun)
                                         init.intero_buttons["jointure"] = False, (False, None), (False, None)
@@ -680,12 +601,12 @@ def main():
                                     second_point = init.intero_buttons["Copy"][2][1]
                                     rect = pygame.Rect(first_point[0], first_point[1], second_point[0] - first_point[0], second_point[1] - first_point[1])
 
-                                    objs, objs_rect = get_objs_and_rects(screen, init.bfn_fun, init)
+                                    objs_rect = get_rects(init.bfn_fun, init, screen.get_width() * 0.05, screen.get_width() * 0.05)
                                     contains = []
                                     for i in range(len(objs_rect)):
                                         if not objs_rect[i] in contains:
                                             if rect.left <= objs_rect[i].left and rect.top <= objs_rect[i].top and rect.right >= objs_rect[i].right and rect.bottom >= objs_rect[i].bottom:
-                                                contains.append(objs[i])
+                                                contains.append(init.bfn_fun[i])
 
                                     if len(contains) == 0:
                                         init.error = True, "error : please select a graph to copy"
@@ -693,9 +614,12 @@ def main():
                                         init.intero_buttons["Copy"] = False, (False, None), (False, None), None
                                         break
 
-                                    contains_fillterd = objs_to_faits(contains)
+                                    # contains_fillterd = objs_to_faits(contains)
+                                    #
+                                    # contains_fillterd_copy = Copy(contains_fillterd)
+                                    contains_fillterd = contains
+                                    contains_fillterd_copy = Copy_new(contains_fillterd)
 
-                                    contains_fillterd_copy = deep_cpopy(contains_fillterd)
 
                                     if len(contains_fillterd) == 0:
                                         init.error = True, "error : you can't copy a relation"
@@ -703,14 +627,12 @@ def main():
                                         init.intero_buttons["Copy"] = False, (False, None), (False, None), None
                                         break
 
-                                    if type(contains_fillterd[0]) == Concept:
-                                        offset_x = init.mouse[0] - (contains_fillterd[0].x + screen.get_width() * 0.05)
-                                        offset_y = init.mouse[1] - (contains_fillterd[0].y + screen.get_width() * 0.05)
-                                    else:
-                                        offset_x = init.mouse[0] - (contains_fillterd[0][0].x + screen.get_width() * 0.05)
-                                        offset_y = init.mouse[1] - (contains_fillterd[0][0].y + screen.get_width() * 0.05)
+                                    offset_x = init.mouse[0] - (contains_fillterd[0].x + screen.get_width() * 0.05)
+                                    offset_y = init.mouse[1] - (contains_fillterd[0].y + screen.get_width() * 0.05)
 
+                                    if type(contains_fillterd_copy) == Concept: contains_fillterd_copy = [contains_fillterd_copy]
                                     contains_fillterd_copy = update_fait_coordinates_copy(contains_fillterd_copy, offset_x, offset_y - init.make_bfn_offset)
+                                    # contains_fillterd_copy = get_objs(contains_fillterd_copy)
                                     init.bfn_fun += contains_fillterd_copy
 
                                     init.intero_buttons["Copy"] = False, (False, None), (False, None), None
@@ -723,18 +645,18 @@ def main():
                                     break
                         elif init.intero_buttons["Restriction"][0] and screen.get_width() * 0.05 <= init.mouse[0] <= screen.get_width() * 0.7 and screen.get_width() * 0.05 <= init.mouse[1] <= screen.get_height() * 0.8:
                             rect = Rect(init.mouse[0], init.mouse[1], 1, 1)
-                            objs, objs_rect = get_objs_and_rects(screen, init.bfn_fun, init)
+                            objs_rect = get_rects(init.bfn_fun, init, screen.get_width() * 0.05, screen.get_width() * 0.05)
 
                             collide = pygame.Rect.collidelist(rect, objs_rect)
                             if collide == -1:
                                 init.error = True, "error : please select a concept"
                                 error_time = time.time()
-                            elif type(objs[collide]) == Relation:
+                            elif type(init.bfn_fun[collide]) == Relation:
                                 init.error = True, "error : you can't restric relations"
                                 error_time = time.time()
-                            elif type(objs[collide]) == Concept:
-                                init.intero_buttons["Restriction"] = False, True, objs[collide], False
-                                init.Restriction_saved_ref = objs[collide].ref
+                            elif type(init.bfn_fun[collide]) == Concept:
+                                init.intero_buttons["Restriction"] = False, True, init.bfn_fun[collide], False
+                                init.Restriction_saved_ref = init.bfn_fun[collide].ref
                         elif init.intero_buttons["Restriction"][2] and screen.get_width() / 2 - 400 / 2 + 70 + init.font2.size("ref : ")[0] <= init.mouse[0] <= screen.get_width() / 2 - 400 / 2 + 70 + init.font2.size("ref : ")[0] + init.font2.size(init.intero_buttons["Restriction"][2].ref)[
                             0] + 10 and screen.get_height() / 2 - 400 / 2 + 100 <= init.mouse[1] <= screen.get_height() / 2 - 400 / 2 + 100 + 10 + init.font2.size("A")[1]:
                             init.intero_buttons["Restriction"] = False, True, init.intero_buttons["Restriction"][2], not init.intero_buttons["Restriction"][3]
@@ -766,20 +688,13 @@ def main():
                         init.intero_buttons["make BFN"] = False
                         init.intero_buttons["auto BFN"] = not init.intero_buttons["auto BFN"]
                         element_drwaned = []
-                        init.BFN = deep_cpopy(init.bf_main_list)
-                        normal_list = []
-                        for element in init.BFN:
-                            if type(element) == Concept:
-                                if element not in normal_list:
-                                    normal_list.append(element)
-                            else:
-                                for e in element:
-                                    if e not in normal_list:
-                                        normal_list.append(e)
-                        init.BFN = normal_list
+
+                        # arr = objs_to_faits(init.bfn)
+                        # init.BFN = Copy(arr)
+                        # init.BFN = get_objs(init.BFN)
+                        init.BFN = Copy_new(init.bfn)
                         auto_BFN(screen, init)
-                    elif init.intero_buttons["make BFN"] and screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 80 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 80:
-                        init.intero_buttons["Restriction"] = True, False, None, False
+
 
 
 
@@ -817,6 +732,7 @@ def main():
                             init.intero_buttons["Restriction"] = False, True, init.intero_buttons["Restriction"][2], True
 
                 elif init.bf_interface:
+
                     if init.new_concept and init.new_concept_in[0]:
                         if init.new_concept_name_typing:
                             if event.key == pygame.K_BACKSPACE:
@@ -850,8 +766,8 @@ def main():
                         if event.key == pygame.K_ESCAPE:
                             init.new_concept = False
                             init.new_relation = False
-                            if not init.new_arc_point1[0]:
-                                init.new_arc = False
+                            init.new_fait =  False, False, []
+                            init.new_arc = False
                 elif init.br_interface:
                     if init.new_concept and init.new_concept_in[0]:
                         if init.new_concept_name_typing:
