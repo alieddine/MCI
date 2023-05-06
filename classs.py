@@ -17,13 +17,13 @@ class Init:
         self.height = self.display.current_h - 130
         self.new_concept = False
         self.new_concept_in = False, (0, 0)
-        self.new_concept_name = "ali "
-        self.new_concept_ref = "eddine"
+        self.new_concept_name = "c1"
+        self.new_concept_ref = "r1"
         self.new_concept_name_typing = False
         self.new_concept_ref_typing = False
         self.new_relation = False
         self.new_relation_in = False, (0, 0)
-        self.new_relation_name = "ali "
+        self.new_relation_name = "relation2"
         self.new_relation_name_typing = False
         self.new_arc = False
         self.new_arc_point1 = False, None
@@ -54,7 +54,8 @@ class Init:
         self.x = False
 
         self.intero_buttons = {"show BF": True, "show BR": False, "make BFN": False, "auto BFN": False, "Restriction": (False, False, None, False), "Copy": (False, (False, None), (False, None), None),
-                               "jointure": (False, (False, None), (False, None)), "fragmentation": (False, (False, None), False)}
+                               "jointure": (False, (False, None), (False, None)), "fragmentation": (False, (False, None), False), "projection": False
+                                ,"Restriction_1": (False, (False, None), (False, None), False), "Simplification": False, "chainage_avant": False}
         self.time = time.time()
         self.error = False, None
 
@@ -65,6 +66,17 @@ class Init:
 
         self.BFN = None
         self.auto_bfn_offset = 0
+
+        self.fun_projecting = False
+        self.fun_rq = []
+        self.show_rq = False
+        self.show_answer = False
+        self.fun_answer = []
+        self.fun_rq_offset = 0
+        self.fun_answer_offset = 0
+        self.fun_answer_filter_offset = 0
+        self.show_answer_filter = False
+        self.fun_answer_filter = []
 
 
 class Concept:

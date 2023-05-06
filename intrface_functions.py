@@ -1,4 +1,5 @@
 import copy
+import sys
 import time
 from array import array
 from shlex import shlex
@@ -65,6 +66,17 @@ def display_edit(screen, init):
         new_bf = init.font2.render("edit BF", True, (50, 50, 50))
     pygame.draw.rect(bf_surface, (255, 255, 255), (bf_surface.get_width() / 2 - init.font2.size("new BF")[0] / 2 - 10, bf_surface.get_height() - 36, init.font2.size("new BF")[0] + 20, 29), 2, border_radius=10)
     bf_surface.blit(new_bf, (bf_surface.get_width() / 2 - init.font2.size("new BF")[0] / 2, bf_surface.get_height() - 32))
+
+    if 150 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2 - 8 <= init.mouse[0] <= 150 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2 - 8 + init.font2.size("save BF")[0] + 16 and 80 + bf_surface.get_height() - 34 <= init.mouse[
+        1] <= 80 + bf_surface.get_height() - 34 + 25:
+        pygame.draw.rect(bf_surface, (50, 50, 50), (100 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2 - 10, bf_surface.get_height() - 36, init.font2.size("save BF")[0] + 20, 29), border_radius=10)
+        new_bf = init.font2.render("save BF", True, (255, 255, 255))
+    else:
+        pygame.draw.rect(bf_surface, (255, 255, 255), (100 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2 - 10, bf_surface.get_height() - 36, init.font2.size("save BF")[0] + 20, 29), border_radius=10)
+        new_bf = init.font2.render("save BF", True, (50, 50, 50))
+    pygame.draw.rect(bf_surface, (255, 255, 255), (100 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2 - 10, bf_surface.get_height() - 36, init.font2.size("save BF")[0] + 20, 29), 2, border_radius=10)
+    bf_surface.blit(new_bf, (100 + bf_surface.get_width() / 2 - init.font2.size("save BF")[0] / 2, bf_surface.get_height() - 32))
+
     bf_list_surface = pygame.Surface((bf_surface.get_width() - 50, bf_surface.get_height() - 100))
     bf_list_surface.fill((70, 70, 70))
 
@@ -88,6 +100,17 @@ def display_edit(screen, init):
         new_br = init.font2.render("new BR", True, (50, 50, 50))
     pygame.draw.rect(br_surface, (255, 255, 255), (br_surface.get_width() / 2 - init.font2.size("new BR")[0] / 2 - 10, br_surface.get_height() - 36, init.font2.size("new BR")[0] + 20, 29), 2, border_radius=10)
     br_surface.blit(new_br, (br_surface.get_width() / 2 - init.font2.size("new BR")[0] / 2, br_surface.get_height() - 32))
+
+    if 50 * 2 + 100 + init.width + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2 - 8 <= init.mouse[0] <= 50 * 2 + 100 + init.width + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2 - 8 + init.font2.size("save BR")[0] + 16 and 80 + br_surface.get_height() - 34 <= init.mouse[1] <= 80 + br_surface.get_height() - 34 + 25:
+        pygame.draw.rect(br_surface, (50, 50, 50), (100 + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2 - 10, br_surface.get_height() - 36, init.font2.size("save BR")[0] + 20, 29), border_radius=10)
+        new_bf = init.font2.render("save BR", True, (255, 255, 255))
+    else:
+        pygame.draw.rect(br_surface, (255, 255, 255), (100 + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2 - 10, br_surface.get_height() - 36, init.font2.size("save BR")[0] + 20, 29), border_radius=10)
+        new_bf = init.font2.render("save BR", True, (50, 50, 50))
+    pygame.draw.rect(br_surface, (255, 255, 255), (100 + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2 - 10, br_surface.get_height() - 36, init.font2.size("save BR")[0] + 20, 29), 2, border_radius=10)
+    br_surface.blit(new_bf, (100 + br_surface.get_width() / 2 - init.font2.size("save BR")[0] / 2, br_surface.get_height() - 32))
+
+
     br_list_surface = pygame.Surface((br_surface.get_width() - 50, br_surface.get_height() - 100))
     br_list_surface.fill((70, 70, 70))
     if not len(init.br_main_list) == 0:
@@ -111,6 +134,161 @@ def display_edit(screen, init):
     vo_surface.blit(vo_list_surface, (25, 50))
     vo_surface.set_alpha(230)
     screen.blit(vo_surface, (50 * 3 + width * 2, 80))
+
+
+def new_rq_intrface(screen, init):
+    from classs import Concept
+    black_fillter = pygame.Surface((screen.get_width(), screen.get_height()))
+    black_fillter.fill((0, 0, 0))
+    black_fillter.set_alpha(128)
+    screen.blit(black_fillter, (0, 0))
+
+    side_container = pygame.Surface((screen.get_width() * 0.2, screen.get_height() * 0.6))
+    side_container.fill((50, 50, 50))
+    side_container.blit(init.font2.render("Concept", True, (255, 255, 255)), (side_container.get_width() / 2 - init.font2.size("Concept")[0] / 2, 20))
+    if 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 + 140 and screen.get_height() * 0.2 + 10 + init.font2.size("Concept")[1] * 2 <= init.mouse[1] <= screen.get_height() * 0.2 + 10 + init.font2.size("Concept")[1] * 2  + 40:
+        pygame.draw.rect(side_container, (255, 0, 0), (side_container.get_width() / 2 - 70, 10 + init.font2.size("Concept")[1] * 2, 140, 40), 2)
+        side_container.blit(init.font2.render("Name : Ref", True, (255, 0, 0)), (side_container.get_width() / 2 - 70 + 140 / 2 - init.font2.size("Name : Ref")[0] / 2, 10 + init.font2.size("Concept")[1] * 2 + 10))
+    else:
+        pygame.draw.rect(side_container, (255, 255, 255), (side_container.get_width() / 2 - 70, 10 + init.font2.size("Concept")[1] * 2, 140, 40), 2)
+        side_container.blit(init.font2.render("Name : Ref", True, (255, 255, 255)), (side_container.get_width() / 2 - 70 + 140 / 2 - init.font2.size("Name : Ref")[0] / 2, 10 + init.font2.size("Concept")[1] * 2 + 10))
+
+    side_container.blit(init.font2.render("Relation", True, (255, 255, 255)), (side_container.get_width() / 2 - init.font2.size("Relation")[0] / 2, 120))
+    if 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 + 140 and screen.get_height() * 0.2 + 110 + init.font2.size("Relation")[1] * 2 <= init.mouse[1] <= screen.get_height() * 0.2 + 110 + init.font2.size("Relation")[1] * 2 + 40:
+        pygame.draw.rect(side_container, (255, 0, 0), (side_container.get_width() / 2 - 70, 110 + init.font2.size("Relation")[1] * 2, 140, 40), 2, 20)
+        side_container.blit(init.font2.render("Name", True, (255, 0, 0)), (side_container.get_width() / 2 - 70 + 140 / 2 - init.font2.size("Name")[0] / 2, 110 + init.font2.size("Relation")[1] * 2 + 10))
+    else:
+        pygame.draw.rect(side_container, (255, 255, 255), (side_container.get_width() / 2 - 70, 110 + init.font2.size("Relation")[1] * 2, 140, 40), 2, 20)
+        side_container.blit(init.font2.render("Name", True, (255, 255, 255)), (side_container.get_width() / 2 - 70 + 140 / 2 - init.font2.size("Name")[0] / 2, 110 + init.font2.size("Relation")[1] * 2 + 10))
+
+
+    if 80 + screen.get_width() * 0.6 + 80 + 80 - 40 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + 80 - 40  + 80 and screen.get_height() * 0.2 + side_container.get_height() - 70 <= init.mouse[1] <= screen.get_height() * 0.2 + side_container.get_height() - 70 + 30:
+        pygame.draw.rect(side_container, (50, 50, 50), (80, side_container.get_height() - 70, 80, 30), border_radius=4)
+        side_container.blit(init.font2.render("Save", True, (255, 0, 0)), (80 - init.font2.size("Save")[0] / 2, side_container.get_height() - 66))
+    else:
+        pygame.draw.rect(side_container, (255, 255, 255), (80 - 40, side_container.get_height() - 70, 80, 30), border_radius=4)
+        side_container.blit(init.font2.render("Save", True, (50, 50, 50)), (80 - init.font2.size("Save")[0] / 2, side_container.get_height() - 66))
+
+    if 80 + screen.get_width() * 0.6 + side_container.get_width() - 80 + 80 - 40 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + side_container.get_width() - 80 + 80 - 40  + 80 and screen.get_height() * 0.2 + side_container.get_height() - 70 <= init.mouse[1] <= screen.get_height() * 0.2 + side_container.get_height() - 70 + 30:
+        pygame.draw.rect(side_container, (50, 50, 50), (side_container.get_width() - 80, side_container.get_height() - 70, 80, 30), border_radius=4)
+        side_container.blit(init.font2.render("Cancel", True, (255, 0, 0)), (side_container.get_width() - 80 - init.font2.size("Cancel")[0] / 2, side_container.get_height() - 66))
+    else:
+        pygame.draw.rect(side_container, (255, 255, 255), (side_container.get_width() - 80 - 40, side_container.get_height() - 70, 80, 30), border_radius=4)
+        side_container.blit(init.font2.render("Cancel", True, (50, 50, 50)), (side_container.get_width() - 80 - init.font2.size("Cancel")[0] / 2, side_container.get_height() - 66))
+
+    side_container.blit(init.font2.render("Arc", True, (255, 255, 255)), (side_container.get_width() / 2 - init.font2.size("Arc")[0] / 2, 220))
+    screen.blit(side_container, (80 + screen.get_width() * 0.6 + 80, screen.get_height() * 0.2))
+
+    if 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 <= init.mouse[0] <= 80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 + 140 and screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 <= init.mouse[1] <= screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 40:
+        pygame.draw.line(screen, (255, 0, 0), (80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70, screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 20), (80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 + 140, screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 20), 2)
+    else:
+        pygame.draw.line(screen, (255, 255, 255), (80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70, screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 20), (80 + screen.get_width() * 0.6 + 80 + side_container.get_width() / 2 - 70 + 140, screen.get_height() * 0.2 + 210 + init.font2.size("Arc")[1] * 2 + 20), 2)
+
+    main_container = pygame.Surface((screen.get_width() * 0.6, screen.get_height() * 0.3))
+    main_container.fill((50, 50, 50))
+    pygame.draw.rect(main_container, (255, 255, 255), (0, 0, main_container.get_width(), main_container.get_height()), 2)
+
+    if not len(init.fun_rq) == 0:
+        for element in init.fun_rq:
+            if type(element) == Concept:
+                pygame.draw.rect(main_container, (255, 255, 255), (element.x - 80, element.y - screen.get_height() * 0.05 + 0, 20 + init.font2.size(element.name + " : " + element.ref)[0], 40), 2)
+                main_container.blit(init.font2.render((element.name + " : " + element.ref), True, (255, 255, 255)), (element.x + (20 + init.font2.size(element.name + " : " + element.ref)[0]) / 2 - init.font2.size(element.name + " : " + element.ref)[0] / 2 - 80, element.y + 10 - screen.get_height() * 0.05 + 0))
+            else:
+                pygame.draw.rect(main_container, (255, 255, 255), (element.x - 80, element.y - screen.get_height() * 0.05 + 0, 20 + init.font2.size(element.name)[0], 40), 2, 20)
+                main_container.blit(init.font2.render(element.name, True, (255, 255, 255)), (element.x + (20 + init.font2.size(element.name)[0]) / 2 - init.font2.size(element.name)[0] / 2 - 80, element.y + 10 - screen.get_height() * 0.05 + 0))
+            draw_arc(element, init, screen, main_container, 0)
+
+    screen.blit(main_container, (80, screen.get_height() * 0.05))
+
+    if init.erase_button or 40 + screen.get_width() * 0.6 <= init.mouse[0] <= 40 + screen.get_width() * 0.6 + 20 and 10 + screen.get_height() * 0.05 <= init.mouse[1] <= 10 + screen.get_height() * 0.05 + 20 :
+        erase_button = pygame.image.load("images/erase_red.png")
+    else:
+        erase_button = pygame.image.load("images/erase_white.png")
+    screen.blit(erase_button, (40 + screen.get_width() * 0.6, 10 + screen.get_height() * 0.05))
+
+    pygame.draw.rect(screen, (255, 255, 255), (80 + screen.get_width() * 0.6 + 80, screen.get_height() * 0.2, screen.get_width() * 0.2, screen.get_height() * 0.6), 2)
+
+    if init.new_concept:
+        if init.new_concept_in[0]:
+            screen.blit(black_fillter, (0, 0))
+            name_ref = pygame.Surface((screen.get_width() * 0.2, screen.get_height() * 0.3))
+            name_ref.fill((50, 50, 50))
+            name_ref.blit(init.font2.render("Name : ", True, (255, 255, 255)), (50, 50))
+            name_ref.blit(init.font2.render(init.new_concept_name, True, (255, 255, 255)), (150, 50))
+            if init.new_concept_name_typing or screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 <= init.mouse[0] <= screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 +  init.font2.size(init.new_concept_name)[0] + 20 and screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 45 <= init.mouse[1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 45 +  init.font2.size("A")[1] + 10:
+                name_ref.blit(init.font2.render(init.new_concept_name, True, (255, 0, 0)), (150, 50))
+                pygame.draw.rect(name_ref, (255, 0, 0), (140, 45, init.font2.size(init.new_concept_name)[0] + 20, init.font2.size("A")[1] + 10), 2)
+            else:
+                name_ref.blit(init.font2.render(init.new_concept_name, True, (255, 255, 255)), (150, 50))
+                pygame.draw.rect(name_ref, (255, 255, 255), (140, 45, init.font2.size(init.new_concept_name)[0] + 20, init.font2.size("A")[1] + 10), 2)
+
+            name_ref.blit(init.font2.render("Ref : ", True, (255, 255, 255)), (50, 100))
+            if init.new_concept_ref_typing or screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 <= init.mouse[0] <= screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 + init.font2.size(init.new_concept_ref)[0] + 20 and screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 95 <= init.mouse[1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 95 + init.font2.size("A")[1] + 10:
+                name_ref.blit(init.font2.render(init.new_concept_ref, True, (255, 0, 0)), (150, 100))
+                pygame.draw.rect(name_ref, (255, 0, 0), (140, 95, init.font2.size(init.new_concept_ref)[0] + 20, init.font2.size("A")[1] + 10), 2)
+            else:
+                name_ref.blit(init.font2.render(init.new_concept_ref, True, (255, 255, 255)), (150, 100))
+                pygame.draw.rect(name_ref, (255, 255, 255), (140, 95, init.font2.size(init.new_concept_ref)[0] + 20, init.font2.size("A")[1] + 10), 2)
+            if screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + name_ref.get_width() / 2 - 25 <= init.mouse[0] <= screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + name_ref.get_width() / 2 - 25 + 50 and screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + name_ref.get_height() - 70 <= init.mouse[1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + name_ref.get_height() - 70 + 30:
+                pygame.draw.rect(name_ref, (180, 180, 180), (name_ref.get_width() / 2 - 25, name_ref.get_height() - 70, 50, 30), border_radius=4)
+                name_ref.blit(init.font2.render("ADD", True, (255, 0, 0)), (name_ref.get_width() / 2 - init.font2.size("ADD")[0] / 2, name_ref.get_height() - 66))
+            else:
+                pygame.draw.rect(name_ref, (255, 255, 255), (name_ref.get_width() / 2 - 25, name_ref.get_height() - 70, 50, 30), border_radius=4)
+                name_ref.blit(init.font2.render("ADD", True, (50, 50, 50)), (name_ref.get_width() / 2 - init.font2.size("ADD")[0] / 2, name_ref.get_height() - 66))
+
+            screen.blit(name_ref, (screen.get_width() / 2 - screen.get_width() * 0.2 / 2, screen.get_height() / 2 - screen.get_height() * 0.3 / 2))
+        else:
+            pygame.draw.rect(screen, (255, 255, 255), (init.mouse[0], init.mouse[1], 140, 40), 2)
+            screen.blit(init.font2.render("Name : Ref", True, (255, 255, 255)), (init.mouse[0] + (20 + init.font2.size("Name")[0]) / 2 - init.font2.size("Name")[0] / 2, init.mouse[1] + 10))
+
+    elif init.new_relation:
+        if init.new_relation_in[0]:
+            screen.blit(black_fillter, (0, 0))
+            name_ref = pygame.Surface((screen.get_width() * 0.2, screen.get_height() * 0.3))
+            name_ref.fill((50, 50, 50))
+            name_ref.blit(init.font2.render("Name : ", True, (255, 255, 255)), (50, 50))
+            name_ref.blit(init.font2.render(init.new_relation_name, True, (255, 255, 255)), (150, 50))
+            if init.new_relation_name_typing or screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 <= init.mouse[0] <= screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + 140 +  init.font2.size(init.new_relation_name)[0] + 20 and screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 45 <= init.mouse[1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + 45 +  init.font2.size("A")[1] + 10:
+                name_ref.blit(init.font2.render(init.new_relation_name, True, (255, 0, 0)), (150, 50))
+                pygame.draw.rect(name_ref, (255, 0, 0), (140, 45, init.font2.size(init.new_relation_name)[0] + 20, init.font2.size("A")[1] + 10), 2)
+            else:
+                name_ref.blit(init.font2.render(init.new_relation_name, True, (255, 255, 255)), (150, 50))
+                pygame.draw.rect(name_ref, (255, 255, 255), (140, 45, init.font2.size(init.new_relation_name)[0] + 20, init.font2.size("A")[1] + 10), 2)
+
+            if screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + name_ref.get_width() / 2 - 25 <= init.mouse[0] <= screen.get_width() / 2 - screen.get_width() * 0.2 / 2 + name_ref.get_width() / 2 - 25 + 50 and screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + name_ref.get_height() - 70 <= init.mouse[1] <= screen.get_height() / 2 - screen.get_height() * 0.3 / 2 + name_ref.get_height() - 70 + 30:
+                pygame.draw.rect(name_ref, (180, 180, 180), (name_ref.get_width() / 2 - 25, name_ref.get_height() - 70, 50, 30), border_radius=4)
+                name_ref.blit(init.font2.render("ADD", True, (255, 0, 0)), (name_ref.get_width() / 2 - init.font2.size("ADD")[0] / 2, name_ref.get_height() - 66))
+            else:
+                pygame.draw.rect(name_ref, (255, 255, 255), (name_ref.get_width() / 2 - 25, name_ref.get_height() - 70, 50, 30), border_radius=4)
+                name_ref.blit(init.font2.render("ADD", True, (50, 50, 50)), (name_ref.get_width() / 2 - init.font2.size("ADD")[0] / 2, name_ref.get_height() - 66))
+
+            screen.blit(name_ref, (screen.get_width() / 2 - screen.get_width() * 0.2 / 2, screen.get_height() / 2 - screen.get_height() * 0.3 / 2))
+        else:
+            pygame.draw.rect(screen, (255, 255, 255), (init.mouse[0], init.mouse[1], 140, 40), 2, 20)
+            screen.blit(init.font2.render("Name", True, (255, 255, 255)), (init.mouse[0] + (20 + init.font2.size("Name")[0]) / 2 - init.font2.size("Name")[0] / 2, init.mouse[1] + 10))
+
+    elif init.new_arc:
+        if init.new_fait[0]:
+            if len(init.new_fait[2]) == 1:
+                draw_one_arc(init.new_fait[2][0], init.mouse, init, screen, main_container, 0)
+            elif len(init.new_fait[2]) == 2:
+                if not init.new_fait[1]:
+                    draw_arrow(screen, pygame.Vector2(init.mouse[0] - 10, init.mouse[1]), pygame.Vector2(init.mouse[0] + 20, init.mouse[1]), (255, 255, 255), 2, 10, 5)
+                    draw_one_arc(init.new_fait[2][0], init.new_fait[2][1], init, screen, main_container, 0)
+                else:
+                    draw_one_arc(init.new_fait[2][0], init.new_fait[2][1], init, screen, main_container, 0)
+                    draw_one_arc(init.new_fait[2][1], init.mouse, init, screen, main_container, 0)
+        else:
+            draw_arrow(screen, pygame.Vector2(init.mouse[0] - 10, init.mouse[1]), pygame.Vector2(init.mouse[0] + 20, init.mouse[1]), (255, 255, 255), 2, 10, 5)
+
+    if init.erase_button:
+        rect = Rect(init.mouse[0], init.mouse[1] - 0, 1, 1)
+        bfn_rec = get_rects(init.fun_rq, init)
+        collide = pygame.Rect.collidelist(rect, bfn_rec)
+        if collide == -1:
+            screen.blit(pygame.image.load("images/erase_white.png"), (init.mouse[0] - 20, init.mouse[1] - 20))
+        else:
+            screen.blit(pygame.image.load("images/erase_red.png"), (init.mouse[0] - 20, init.mouse[1] - 20))
 
 
 def new_bf_intrface(screen, init):
@@ -582,7 +760,7 @@ def new_br_intrface(screen, init):
             screen.blit(pygame.image.load("images/erase_red.png"), (init.mouse[0] - 20, init.mouse[1] - 20))
 
 
-def Restriction(screen, init, obj):
+def Restriction_intface(screen, init, obj):
     dark_filter = pygame.Surface((screen.get_width(), screen.get_height()))
     dark_filter.fill((0, 0, 0))
     dark_filter.set_alpha(128)
@@ -621,27 +799,21 @@ def Restriction(screen, init, obj):
 
     screen.blit(main_surface, (screen.get_width() / 2 - 400 / 2, screen.get_height() / 2 - 400 / 2))
 
+
 def auto_BFN(screen, init):
+    init.BFN = Simplification(init.BFN)
     clock = pygame.time.Clock()
-    for element in init.BFN:
+    for concept_1 in init.BFN:
         clock.tick(60)
-        if type(element) == Concept:
+        if type(concept_1) == Concept:
             for concept_2 in init.BFN:
                 clock.tick(60)
 
-                if type(concept_2) == Concept and element != concept_2 and element.name == concept_2.name and element.ref == concept_2.ref:
-                    draw_BFN(screen, init, element, concept_2)
-                    # time.sleep(1)
+                if type(concept_2) == Concept and concept_1 != concept_2 and concept_1.name == concept_2.name and concept_1.ref == concept_2.ref:
+                    draw_BFN(screen, init, concept_1, concept_2)
                     clock.tick(1)
-
-                    element.arcs += concept_2.arcs
-                    element.arcs_back += concept_2.arcs_back
-                    for refernce in concept_2.arcs_back:
-                        refernce.arcs.remove(concept_2)
-                        refernce.arcs.append(element)
-                    init.BFN.remove(concept_2)
-                    draw_BFN(screen, init, element, concept_2)
-                    # time.sleep(2)
+                    init.BFN = Jointure(concept_1, concept_2, init.BFN)[1]
+                    draw_BFN(screen, init, concept_1, concept_2)
 
 
 def draw_BFN(screen, init, c1, c2):
@@ -715,7 +887,20 @@ def display_interro(screen, init):
         mauto_bfn_button.fill((255, 255, 255))
         mauto_bfn_button.blit(init.font.render("auto BFN", True, (0, 0, 0)), (70 / 2 - init.font.size("auto BFN")[0] / 2, 30 / 2 - init.font.size("auto BFN")[1] / 2))
     screen.blit(mauto_bfn_button, (screen.get_width() * 0.8, screen.get_height() * 0.1 + 120))
+
+
+
     if init.intero_buttons["auto BFN"]:
+        chainage_avant_button = pygame.Surface((70, 30))
+        if screen.get_width() * 0.8 + 80 <= init.mouse[0] <= screen.get_width() * 0.8 + 150 and screen.get_height() * 0.1 + 120 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 120:
+            chainage_avant_button.fill((0, 0, 0))
+            chainage_avant_button.blit(init.font.render("avant", True, (255, 0, 0)), (70 / 2 - init.font.size("avant")[0] / 2, 30 / 2 - init.font.size("avant")[1] / 2))
+
+        else:
+            chainage_avant_button.fill((255, 255, 255))
+            chainage_avant_button.blit(init.font.render("avant", True, (0, 0, 0)), (70 / 2 - init.font.size("avant")[0] / 2, 30 / 2 - init.font.size("avant")[1] / 2))
+        screen.blit(chainage_avant_button, (screen.get_width() * 0.8 + 80, screen.get_height() * 0.1 + 120))
+
         element_drwaned = []
         for obj in init.BFN:
             if not obj in element_drwaned:
@@ -735,8 +920,11 @@ def display_interro(screen, init):
             obj = element
             if not obj in element_drwaned:
                 if type(obj) == Concept:
-                    pygame.draw.rect(main_surface, (255, 255, 255), (obj.x, obj.y + init.make_bfn_offset, 20 + init.font2.size(obj.name + " : " + obj.ref)[0], 40), 2)
-                    main_surface.blit(init.font2.render((obj.name + " : " + obj.ref), True, (255, 255, 255)),
+                    color = (255, 255, 255)
+                    if obj == init.intero_buttons["fragmentation"][1][1] or obj == init.intero_buttons["Restriction_1"][1][1] or obj ==init.intero_buttons["Restriction_1"][2][1]:
+                        color = (255, 0, 0)
+                    pygame.draw.rect(main_surface, color, (obj.x, obj.y + init.make_bfn_offset, 20 + init.font2.size(obj.name + " : " + obj.ref)[0], 40), 2)
+                    main_surface.blit(init.font2.render((obj.name + " : " + obj.ref), True, color),
                                       (obj.x + (20 + init.font2.size(obj.name + " : " + obj.ref)[0]) / 2 - init.font2.size(obj.name + " : " + obj.ref)[0] / 2, obj.y + 10 + init.make_bfn_offset))
                 else:
                     pygame.draw.rect(main_surface, (255, 255, 255), (obj.x, obj.y + init.make_bfn_offset, 20 + init.font2.size(obj.name)[0], 40), 2, 20)
@@ -752,6 +940,16 @@ def display_interro(screen, init):
             Restriction_button.fill((255, 255, 255))
             Restriction_button.blit(init.font.render("Restriction", True, (0, 0, 0)), (70 / 2 - init.font.size("Restriction")[0] / 2, 30 / 2 - init.font.size("Restriction")[1] / 2))
         screen.blit(Restriction_button, (screen.get_width() * 0.8 + 10 + 70, screen.get_height() * 0.1 + 80))
+
+        Restriction_button = pygame.Surface((70, 30))
+        if init.intero_buttons["Restriction_1"][0] or screen.get_width() * 0.8 + 10 + 150 <= init.mouse[0] <= screen.get_width() * 0.8 + 150 + 10 + 70 and screen.get_height() * 0.1 + 80 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 80:
+            Restriction_button.fill((230, 230, 230))
+            Restriction_button.blit(init.font.render("Restriction_1", True, (255, 0, 0)), (70 / 2 - init.font.size("Restriction_1")[0] / 2, 30 / 2 - init.font.size("Restriction_1")[1] / 2))
+
+        else:
+            Restriction_button.fill((255, 255, 255))
+            Restriction_button.blit(init.font.render("Restriction_1", True, (0, 0, 0)), (70 / 2 - init.font.size("Restriction")[0] / 2, 30 / 2 - init.font.size("Restriction_1")[1] / 2))
+        screen.blit(Restriction_button, (screen.get_width() * 0.8 + 10 + 150, screen.get_height() * 0.1 + 80))
 
         copy_button = pygame.Surface((70, 30))
         if init.intero_buttons["Copy"][0] or screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 120 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 120:
@@ -782,6 +980,27 @@ def display_interro(screen, init):
             fragmentation_button.fill((255, 255, 255))
             fragmentation_button.blit(init.font.render("fragme...", True, (0, 0, 0)), (70 / 2 - init.font.size("fragme...")[0] / 2, 30 / 2 - init.font.size("fragme...")[1] / 2))
         screen.blit(fragmentation_button, (screen.get_width() * 0.8 + 10 + 70, screen.get_height() * 0.1 + 200))
+
+        projection_button = pygame.Surface((70, 30))
+        if init.intero_buttons["projection"] or screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 240 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 240:
+            projection_button.fill((230, 230, 230))
+            projection_button.blit(init.font.render("projection", True, (255, 0, 0)), (70 / 2 - init.font.size("projection")[0] / 2, 30 / 2 - init.font.size("projection")[1] / 2))
+
+        else:
+            projection_button.fill((255, 255, 255))
+            projection_button.blit(init.font.render("projection", True, (0, 0, 0)), (70 / 2 - init.font.size("projection")[0] / 2, 30 / 2 - init.font.size("projection")[1] / 2))
+        screen.blit(projection_button, (screen.get_width() * 0.8 + 10 + 70, screen.get_height() * 0.1 + 240))
+
+        simplification_button = pygame.Surface((70, 30))
+        if init.intero_buttons["Simplification"] or screen.get_width() * 0.8 + 10 + 70 <= init.mouse[0] <= screen.get_width() * 0.8 + 70 + 10 + 70 and screen.get_height() * 0.1 + 280 <= init.mouse[1] <= screen.get_height() * 0.1 + 30 + 280:
+            simplification_button.fill((230, 230, 230))
+            simplification_button.blit(init.font.render("Simplification", True, (255, 0, 0)), (70 / 2 - init.font.size("Simplification")[0] / 2, 30 / 2 - init.font.size("Simplification")[1] / 2))
+
+        else:
+            simplification_button.fill((255, 255, 255))
+            simplification_button.blit(init.font.render("Simplification", True, (0, 0, 0)), (70 / 2 - init.font.size("Simplification")[0] / 2, 30 / 2 - init.font.size("Simplification")[1] / 2))
+        screen.blit(simplification_button, (screen.get_width() * 0.8 + 10 + 70, screen.get_height() * 0.1 + 280))
+
 
     elif init.intero_buttons["show BF"]:
         element_drwaned = []
@@ -862,7 +1081,7 @@ def display_interro(screen, init):
     if init.intero_buttons["fragmentation"][1] and init.intero_buttons["make BFN"]:
         pass
     if init.intero_buttons["Restriction"][1] and init.intero_buttons["make BFN"]:
-        Restriction(screen, init, init.intero_buttons["Restriction"][2])
+        Restriction_intface(screen, init, init.intero_buttons["Restriction"][2])
 
     if init.intero_buttons["Copy"][0] and init.intero_buttons["make BFN"]:
         if init.intero_buttons["Copy"][1][0] and not init.intero_buttons["Copy"][2][0]:
@@ -871,6 +1090,141 @@ def display_interro(screen, init):
             pygame.draw.rect(screen, (255, 255, 255), (init.intero_buttons["Copy"][1][1][0], init.intero_buttons["Copy"][1][1][1], init.intero_buttons["Copy"][2][1][0] - init.intero_buttons["Copy"][1][1][0], init.intero_buttons["Copy"][2][1][1] - init.intero_buttons["Copy"][1][1][1]), 2)
     if init.intero_buttons["jointure"][2][0] and init.intero_buttons["jointure"][1][0]:
         window_widh_buttons(screen, init, "do you want to join them")
+
+    if init.intero_buttons["Restriction_1"][2][0]:
+        window_widh_buttons(screen, init, "do you want to restrict")
+
+
+    if init.fun_projecting:
+        show_rq_button = pygame.Surface((70, 30))
+        if init.show_rq or 20 <= init.mouse[0] <= 20 + 70 and screen.get_height() * 0.8 <= init.mouse[1] <= screen.get_height() * 0.8 + 30:
+            show_rq_button.fill((230, 230, 230))
+            show_rq_button.blit(init.font.render("show rq", True, (255, 0, 0)), (70 / 2 - init.font.size("show rq")[0] / 2, 30 / 2 - init.font.size("show rq")[1] / 2))
+
+        else:
+            show_rq_button.fill((255, 255, 255))
+            show_rq_button.blit(init.font.render("show rq", True, (0, 0, 0)), (70 / 2 - init.font.size("show rq")[0] / 2, 30 / 2 - init.font.size("show rq")[1] / 2))
+        screen.blit(show_rq_button, (20, screen.get_height() * 0.8))
+
+        show_answer_button = pygame.Surface((70, 30))
+        if init.show_answer or 20 <= init.mouse[0] <= 20 + 70 and screen.get_height() * 0.8 + 40 <= init.mouse[1] <= screen.get_height() * 0.8 + 40 + 30:
+            show_answer_button.fill((230, 230, 230))
+            show_answer_button.blit(init.font.render("show answer", True, (255, 0, 0)), (70 / 2 - init.font.size("show answer")[0] / 2, 30 / 2 - init.font.size("show answer")[1] / 2))
+
+        else:
+            show_answer_button.fill((255, 255, 255))
+            show_answer_button.blit(init.font.render("show answer", True, (0, 0, 0)), (70 / 2 - init.font.size("show answer")[0] / 2, 30 / 2 - init.font.size("show answer")[1] / 2))
+        screen.blit(show_answer_button, (20, screen.get_height() * 0.8 + 40))
+
+        filter_button = pygame.Surface((70, 30))
+        if init.show_answer_filter or 100 <= init.mouse[0] <= 100 + 70 and screen.get_height() * 0.8 + 40 <= init.mouse[1] <= screen.get_height() * 0.8 + 40 + 30:
+            filter_button.fill((230, 230, 230))
+            filter_button.blit(init.font.render("filter", True, (255, 0, 0)), (70 / 2 - init.font.size("filter")[0] / 2, 30 / 2 - init.font.size("filter")[1] / 2))
+
+        else:
+            filter_button.fill((255, 255, 255))
+            filter_button.blit(init.font.render("filter", True, (0, 0, 0)), (70 / 2 - init.font.size("filter")[0] / 2, 30 / 2 - init.font.size("filter")[1] / 2))
+        screen.blit(filter_button, (100, screen.get_height() * 0.8 + 40))
+
+        stop_projection_button = pygame.Surface((70, 30))
+        if 20 <= init.mouse[0] <= 20 + 70 and screen.get_height() * 0.8 + 80 <= init.mouse[1] <= screen.get_height() * 0.8 + 80 + 30:
+            stop_projection_button.fill((230, 230, 230))
+            stop_projection_button.blit(init.font.render("stop", True, (255, 0, 0)), (70 / 2 - init.font.size("stop")[0] / 2, 30 / 2 - init.font.size("stop")[1] / 2))
+
+        else:
+            stop_projection_button.fill((255, 255, 255))
+            stop_projection_button.blit(init.font.render("stop", True, (0, 0, 0)), (70 / 2 - init.font.size("stop")[0] / 2, 30 / 2 - init.font.size("stop")[1] / 2))
+        screen.blit(stop_projection_button, (20, screen.get_height() * 0.8 + 80))
+
+
+def show_fun_rq(screen, init):
+    main_surface = pygame.Surface((screen.get_width() * 0.8, screen.get_height() * 0.3))
+    main_surface.fill((50, 50, 50))
+    first = init.fun_rq[0]
+    for element in init.fun_rq:
+        if first.x > element.x:
+            first = element
+    offset_x = (screen.get_width() * 0.2 + 20) - (first.x)
+    offset_y = (screen.get_height() * 0.7 + 20) - (first.y)
+    init.fun_rq = update_fait_coordinates_copy(init.fun_rq, offset_x, offset_y)
+    element_drwaned = []
+    for element in init.fun_rq:
+        obj = element
+        if not obj in element_drwaned:
+            if type(obj) == Concept:
+                color = (255, 255, 255)
+                if obj.ref == "*":
+                    color = (255, 0, 0)
+                pygame.draw.rect(main_surface, color, (obj.x - screen.get_width() * 0.2, obj.y - screen.get_height() * 0.7 + init.fun_rq_offset, 20 + init.font2.size(obj.name + " : " + obj.ref)[0], 40), 2)
+                main_surface.blit(init.font2.render((obj.name + " : " + obj.ref), True, color),
+                                  (obj.x - screen.get_width() * 0.2 + (20 + init.font2.size(obj.name + " : " + obj.ref)[0]) / 2 - init.font2.size(obj.name + " : " + obj.ref)[0] / 2, obj.y - screen.get_height() * 0.7 + 10 + init.fun_rq_offset))
+            else:
+                pygame.draw.rect(main_surface, (255, 255, 255), (obj.x - screen.get_width() * 0.2, obj.y - screen.get_height() * 0.7 + init.fun_rq_offset, 20 + init.font2.size(obj.name)[0], 40), 2, 20)
+                main_surface.blit(init.font2.render(obj.name, True, (255, 255, 255)), (obj.x - screen.get_width() * 0.2 + (20 + init.font2.size(obj.name)[0]) / 2 - init.font2.size(obj.name)[0] / 2, obj.y - screen.get_height() * 0.7 + 10 + init.fun_rq_offset))
+            element_drwaned.append(obj)
+            draw_arc_intero(obj, init, (- screen.get_width() * 0.2, - screen.get_height() * 0.7), main_surface, init.fun_rq_offset)
+
+    screen.blit(main_surface, (screen.get_width() * 0.2, screen.get_height() * 0.7))
+    pygame.draw.rect(screen, (255, 255, 255), (screen.get_width() * 0.2, screen.get_height() * 0.7, screen.get_width() * 0.8, screen.get_height() * 0.3), 2)
+
+
+def show_fun_answer(screen, init):
+    main_surface = pygame.Surface((screen.get_width() * 0.8, screen.get_height() * 0.3))
+    main_surface.fill((50, 50, 50))
+    rq_faits = objs_to_faits(init.fun_rq)
+    s = ""
+    space = 0
+    if not init.fun_answer == False:
+        for i, element in enumerate(init.fun_answer):
+            if type(rq_faits[i]) == Concept:
+                s += "concept "+ str(i)+" ::  "+ str(rq_faits[i].name)+ " : "+ str(rq_faits[i].ref)
+                space = len("concept "+ str(i)+" ::  "+ str(rq_faits[i].name)+ " : "+ str(rq_faits[i].ref))
+            else:
+                s += "fait "+ str(i)+" ::  "+ str(rq_faits[i][0].name) + " : " + str(rq_faits[i][0].ref) + "=>"+ str(rq_faits[i][1].name) + "=>" + str(rq_faits[i][2].name) + " : " + str(rq_faits[i][2].ref)
+                space = len("fait "+ str(i)+" ::  "+ str(rq_faits[i][0].name) + " : " + str(rq_faits[i][0].ref) + "=>"+ str(rq_faits[i][1].name) + "=>" + str(rq_faits[i][2].name) + " : " + str(rq_faits[i][2].ref))
+            s += "\n"
+            for j, r in enumerate(element):
+                s += "_" * space
+
+                if type(r) == Concept:
+                    s += "answer "+ str(j) + " ::  "+ str(r.name)+ " : "+ str(r.ref)
+                    s += "\n"
+
+                else:
+                    s += "answer "+ str(j) + " ::  "+ str(r[0].name)+ " : "+ str(r[0].ref)  + "=>"+ str(r[1].name) + "=>"+ str(r[2].name) + " : "+ str(r[2].ref)
+                s += "\n"
+        render_multi_line_string(main_surface, init.font2, s, 20, 20, init.font2.size("A")[1], init.fun_answer_offset)
+
+    else:
+        main_surface.blit(init.font3.render("Null :d ", True, (255, 255, 255)), (50, 50))
+
+    screen.blit(main_surface, (screen.get_width() * 0.2, screen.get_height() * 0.7))
+    pygame.draw.rect(screen, (255, 255, 255), (screen.get_width() * 0.2, screen.get_height() * 0.7, screen.get_width() * 0.8, screen.get_height() * 0.3), 2)
+
+
+def show_fun_answer_filter(screen, init):
+    main_surface = pygame.Surface((screen.get_width() * 0.8, screen.get_height() * 0.3))
+    main_surface.fill((50, 50, 50))
+
+    array, premis_Y = update_relge_coordinates(init, init.fun_answer_filter, 20, 20)
+
+    element_drwaned = []
+    for obj in array:
+        if not obj in element_drwaned:
+            if type(obj) == Concept:
+                pygame.draw.rect(main_surface, (255, 255, 255), (obj.x, obj.y + init.fun_answer_filter_offset, 20 + init.font2.size(obj.name + " : " + obj.ref)[0], 40), 2)
+                main_surface.blit(init.font2.render((obj.name + " : " + obj.ref), True, (255, 255, 255)),
+                                  (obj.x + (20 + init.font2.size(obj.name + " : " + obj.ref)[0]) / 2 - init.font2.size(obj.name + " : " + obj.ref)[0] / 2, obj.y + 10  + init.fun_answer_filter_offset))
+            else:
+                pygame.draw.rect(main_surface, (255, 255, 255), (obj.x, obj.y  + init.fun_answer_filter_offset, 20 + init.font2.size(obj.name)[0], 40), 2, 20)
+                main_surface.blit(init.font2.render(obj.name, True, (255, 255, 255)), (obj.x + (20 + init.font2.size(obj.name)[0]) / 2 - init.font2.size(obj.name)[0] / 2, obj.y + 10  + init.fun_answer_filter_offset))
+
+            element_drwaned.append(obj)
+        draw_arc_intero(obj, init, (0, 0), main_surface, init.fun_answer_filter_offset)
+
+    screen.blit(main_surface, (screen.get_width() * 0.2, screen.get_height() * 0.7))
+    pygame.draw.rect(screen, (255, 255, 255), (screen.get_width() * 0.2, screen.get_height() * 0.7, screen.get_width() * 0.8, screen.get_height() * 0.3), 2)
+
 
 
 def window_widh_buttons(screen, init, message):
@@ -972,114 +1326,6 @@ def objs_to_faits(contains):
     return contains_fillterd
 
 
-def Copy_new(arr):
-    obj_new_id_dics = {}
-    for element in arr:
-        if type(element) == Concept:
-            if element not in obj_new_id_dics:
-                obj_new_id_dics[element] = copy.deepcopy(element)
-        elif type(element) == Relation:
-            if element not in obj_new_id_dics:
-                obj_new_id_dics[element] = copy.deepcopy(element)
-
-    new_arr = arr.copy()
-
-    delete_relations = []
-    for element in arr:
-        if type(element) == Relation:
-            if element.arcs[0] not in obj_new_id_dics or len(element.arcs) == 0:
-                delete_relations.append(element)
-                continue
-            if element.arcs_back[0] not in obj_new_id_dics or len(element.arcs_back) == 0:
-                delete_relations.append(element)
-                continue
-    for element in delete_relations:
-        new_arr.remove(element)
-        arr.remove(element)
-        obj_new_id_dics.pop(element)
-    for i, element in enumerate(arr):
-        new_arr[i] = obj_new_id_dics[element]
-
-        delete_arc = []
-        for j, arcs in enumerate(element.arcs):
-            if arcs not in obj_new_id_dics:
-                delete_arc.append(new_arr[i].arcs[j])
-                continue
-            new_arr[i].arcs[j] = obj_new_id_dics[arcs]
-        for e in delete_arc:
-            new_arr[i].arcs.remove(e)
-        delete_arc = []
-        for j, arcs_back in enumerate(element.arcs_back):
-            if arcs_back not in obj_new_id_dics:
-                delete_arc.append(new_arr[i].arcs_back[j])
-                continue
-            new_arr[i].arcs_back[j] = obj_new_id_dics[arcs_back]
-        for e in delete_arc:
-            new_arr[i].arcs_back.remove(e)
-
-    return new_arr
-
-
-def Copy(contains_fillterd):
-
-    if len(contains_fillterd) == 1:
-        return copy.deepcopy(contains_fillterd[0])
-
-    obj_new_id_dics = {}
-    for element in contains_fillterd:
-        if type(element) == Concept:
-            if element not in obj_new_id_dics:
-                obj_new_id_dics[element] = copy.deepcopy(element)
-        else:
-            for e in element:
-                if e not in obj_new_id_dics:
-                    obj_new_id_dics[e] = copy.deepcopy(e)
-
-    contains_fillterd_copy = copy.deepcopy(contains_fillterd)
-
-    for i, element in enumerate(contains_fillterd):
-        if type(element) == Concept:
-            contains_fillterd_copy[i] = obj_new_id_dics[element]
-            for j, arc in enumerate(element.arcs):
-                if not arc in obj_new_id_dics:
-                    if j < len(contains_fillterd_copy[i].arcs):
-                        contains_fillterd_copy[i].arcs.pop(j)
-                else:
-                    contains_fillterd_copy[i].arcs[j] = obj_new_id_dics[arc]
-            for j, arc_back in enumerate(element.arcs_back):
-                if not arc_back in obj_new_id_dics:
-                    contains_fillterd_copy[i].arcs_back.pop(j)
-                else:
-                    contains_fillterd_copy[i].arcs_back[j] = obj_new_id_dics[arc_back]
-        else:
-            for k, e in enumerate(element):
-                if type(e) == Concept:
-                    contains_fillterd_copy[i][k] = obj_new_id_dics[e]
-                    # print(element[0].arcs)
-                    for j, arc in enumerate(e.arcs):
-                        if not arc in obj_new_id_dics:
-                            if j < len(contains_fillterd_copy[i][k].arcs): contains_fillterd_copy[i][k].arcs.pop(j)
-                        else:
-                            contains_fillterd_copy[i][k].arcs[j] = obj_new_id_dics[arc]
-                    for j, arc_back in enumerate(e.arcs_back):
-                        if not arc_back in obj_new_id_dics:
-                            if j < len(contains_fillterd_copy[i][k].arcs_back): contains_fillterd_copy[i][k].arcs_back.pop(j)
-                        else:
-                            contains_fillterd_copy[i][k].arcs_back[j] = obj_new_id_dics[arc_back]
-                else:
-
-                    contains_fillterd_copy[i][k] = obj_new_id_dics[e]
-                    for j, arc in enumerate(e.arcs):
-                        if not arc in obj_new_id_dics:
-                            if j < len(contains_fillterd_copy[i][k].arcs): contains_fillterd_copy[i][k].arcs.pop(j)
-                        else:
-                            contains_fillterd_copy[i][k].arcs[j] = obj_new_id_dics[arc]
-    return contains_fillterd_copy
-
-
-def chainge_avant(init):
-    pass
-
 def raise_(screen, init, error):
     error_surface = pygame.Surface((init.font2.size(error)[0] + 50, 60))
     error_surface.fill((0, 0, 0))
@@ -1093,67 +1339,67 @@ def update_relge_coordinates(init, array, regle_y, regle_x=20):
     for element in array:
         if type(element) == Concept:
             if element == array[0]:
-                element.x = regle_x
+                element.x = regle_x + 40
                 element.y = regle_y
                 if len(element.arcs) == 1:
-                    element.arcs[0].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                    element.arcs[0].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                     element.arcs[0].y = element.y
                 elif len(element.arcs) > 1:
 
                     for i in range(len(element.arcs)):
                         if i == 0:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y
 
                         elif i == 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y + max_y
                             max_y += 60
                         elif i > 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.arcs[1].y + (i - 1) * 60
                             max_y += 60
             elif len(element.arcs_back) != 0:
-                element.x = element.arcs_back[0].x + 20 + 20 + init.font2.size(element.name)[0]
+                element.x = element.arcs_back[0].x + 20 + 80 + 20 + init.font2.size(element.name)[0]
                 element.y = element.arcs_back[0].y
                 if len(element.arcs) == 1:
-                    element.arcs[0].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                    element.arcs[0].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                     element.arcs[0].y = element.y
                 elif len(element.arcs) > 1:
 
                     for i in range(len(element.arcs)):
                         if i == 0:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y
 
                         elif i == 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y + max_y
                             max_y += 60
                         elif i > 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.arcs[1].y + (i - 1) * 60
                             max_y += 60
             elif len(element.arcs_back) == 0:
-                element.x = regle_x
-                element.y = max_y + 60
+                element.x = regle_x + 40
+                element.y = regle_y + max_y
                 max_y += 50
                 if len(element.arcs) == 1:
-                    element.arcs[0].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                    element.arcs[0].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                     element.arcs[0].y = element.y
                 elif len(element.arcs) > 1:
 
                     for i in range(len(element.arcs)):
                         if i == 0:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y
 
                         elif i == 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.y + max_y
                             max_y += 60
                         elif i > 1:
-                            element.arcs[i].x = element.x + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
+                            element.arcs[i].x = element.x + 20 + 20 + 20 + init.font2.size(element.name + " : " + element.ref)[0]
                             element.arcs[i].y = element.arcs[1].y + (i - 1) * 60
                             max_y += 60
 
@@ -1164,24 +1410,10 @@ def update_fait_coordinates_copy(array, x, y):
     corrected = []
 
     for element in array:
-        if type(element) == Concept or type(element) == Relation:
-            if not element in corrected:
-                element.x += x
-                element.y += y
-                corrected.append(element)
-        else:
-            if not element[0] in corrected:
-                element[0].x += x
-                element[0].y += y
-                corrected.append(element[0])
-            if not element[1] in corrected:
-                element[1].x += x
-                element[1].y += y
-                corrected.append(element[1])
-            if not element[2] in corrected:
-                element[2].x += x
-                element[2].y += y
-                corrected.append(element[2])
+        if not element in corrected:
+            element.x += x
+            element.y += y
+            corrected.append(element)
     return array
 
 
@@ -1262,6 +1494,12 @@ def render_multi_line_br(screen, font, array, x, y, font_size, init, offset):
         j += 1
 
 
+def render_multi_line_string(screen, font, text, x, y, fsize, offset):
+    lines = text.splitlines()
+    for i, l in enumerate(lines):
+        screen.blit(font.render(l, 0, (255, 255, 255)), (x, y + offset + fsize * i))
+
+
 def array_premise_conclusion(list):
     from classs import Concept
     list_to_retuer = []
@@ -1329,5 +1567,364 @@ def display_vo_list(screen, init, offset, concept_list, relation_list, signature
     for element in marqueurs_list:
         screen.blit(init.font2.render("t(" + element[0] + ")" + " = " + element[1], True, (255, 255, 255)), (30, offset + 10 + init.font2.size("A")[1] * i))
         i += 1
+
+
+def Copy(arr):
+    obj_new_id_dics = {}
+    for element in arr:
+        if type(element) == Concept:
+            if element not in obj_new_id_dics:
+                obj_new_id_dics[element] = copy.deepcopy(element)
+        elif type(element) == Relation:
+            if element not in obj_new_id_dics:
+                obj_new_id_dics[element] = copy.deepcopy(element)
+
+    new_arr = arr.copy()
+
+    delete_relations = []
+    for element in arr:
+        if type(element) == Relation:
+            if element.arcs[0] not in obj_new_id_dics or len(element.arcs) == 0:
+                delete_relations.append(element)
+                continue
+            if element.arcs_back[0] not in obj_new_id_dics or len(element.arcs_back) == 0:
+                delete_relations.append(element)
+                continue
+    for element in delete_relations:
+        new_arr.remove(element)
+        arr.remove(element)
+        obj_new_id_dics.pop(element)
+    for i, element in enumerate(arr):
+        new_arr[i] = obj_new_id_dics[element]
+
+        delete_arc = []
+        for j, arcs in enumerate(element.arcs):
+            if arcs not in obj_new_id_dics:
+                if j + 1 < len(new_arr[i].arcs):
+                    delete_arc.append(new_arr[i].arcs[j])
+                    continue
+            if arcs in obj_new_id_dics:
+                new_arr[i].arcs[j] = obj_new_id_dics[arcs]
+        for e in delete_arc:
+            if e not in obj_new_id_dics:
+                new_arr[i].arcs.remove(e)
+        delete_arc = []
+        for j, arcs_back in enumerate(element.arcs_back):
+            if arcs_back not in obj_new_id_dics:
+                if j + 1 < len(new_arr[i].arcs_back):
+                    delete_arc.append(new_arr[i].arcs_back[j])
+                    continue
+            if arcs_back in obj_new_id_dics:
+                new_arr[i].arcs_back[j] = obj_new_id_dics[arcs_back]
+        for e in delete_arc:
+            if e not in obj_new_id_dics:
+                new_arr[i].arcs_back.remove(e)
+
+    return new_arr
+
+
+def Jointure(concept_1, concept_2, array):
+    if concept_1.name != concept_2.name:
+        return False, 0
+    elif concept_1.ref != concept_2.ref:
+        return False, 1
+    else:
+        concept_1.arcs += concept_2.arcs
+        concept_1.arcs_back += concept_2.arcs_back
+        for refernce in concept_2.arcs_back:
+            refernce.arcs.remove(concept_2)
+            refernce.arcs.append(concept_1)
+        for refernce in concept_2.arcs:
+            refernce.arcs_back.remove(concept_2)
+            refernce.arcs_back.append(concept_1)
+        array.remove(concept_2)
+        return True, array
+
+
+def Fragmentation(concept, array, init, screen):
+    new_concept = Copy([concept])[0]
+    for relation in concept.arcs:
+        relation.arcs_back = [new_concept]
+    new_concept.arcs = concept.arcs.copy()
+    new_concept.arcs_back = []
+    concept.arcs = []
+    new_concept.x = init.mouse[0] - screen.get_width() * 0.05
+    if init.intero_buttons["fragmentation"][1][0]:
+        new_concept.y = init.mouse[1] - screen.get_width() * 0.05 - init.make_bfn_offset
+    else:
+        new_concept.y = init.mouse[1] - screen.get_width() * 0.05
+
+    array.append(new_concept)
+
+
+def Restriction(concept, ref):
+    concept.ref = ref
+
+
+def Restriction_1(concept_1, concept_2):
+    concept_1.ref = concept_2.ref
+
+
+def Projection(rq, bfn):
+
+    for element in rq:
+        if len(element.arcs_back) == 0:
+            firist_rq = element
+            break
+
+    rq_faits = objs_to_faits(rq)
+    bfn_faits = objs_to_faits(bfn)
+    answers = [] * len(rq_faits)
+    stop = False
+    found_fait = False
+    for i, element in enumerate(rq_faits):
+        stop = False
+        answer = []
+        if type(element) != Concept:
+            c1 = element[0]
+            r1 = element[1]
+            c2 = element[2]
+            if c1.ref != "*" and c2.ref != "*":
+                for e in bfn_faits:
+                    if type(e) != Concept:
+                        c1_2 = e[0]
+                        r1_2 = e[1]
+                        c2_2 = e[2]
+                        if c1.name == c1_2.name and c2.name == c2_2.name and r1.name == r1_2.name and c1.ref == c1_2.ref and c2.ref == c2_2.ref:
+                            found_fait = True
+                            answer.append(e)
+                            break
+                if not found_fait:
+                    stop = True
+            elif c1.ref == "*" and c2.ref != "*":
+                for e in bfn_faits:
+                    if type(e) != Concept:
+                        c1_2 = e[0]
+                        r1_2 = e[1]
+                        c2_2 = e[2]
+                        if c1.name == c1_2.name and c2.name == c2_2.name and r1.name == r1_2.name and c1_2.ref != "*" and c2.ref == c2_2.ref:
+                            found_fait = True
+                            answer.append(e)
+                if not found_fait:
+                    stop = True
+            elif c2.ref == "*" and c1.ref != "*":
+                for e in bfn_faits:
+                    if type(e) != Concept:
+                        c1_2 = e[0]
+                        r1_2 = e[1]
+                        c2_2 = e[2]
+                        # if c1.name == c1_2.name and c2.name == c2_2.name and r1.name == r1_2.name and c1.ref == c1_2.ref and c2_2.ref != "*":
+                        if c1.name == c1_2.name:
+                            if c2.name == c2_2.name:
+                                if r1.name == r1_2.name:
+                                    if c1.ref == c1_2.ref:
+                                        if c2_2.ref != "*":
+                                            found_fait = True
+                                            answer.append(e)
+                if not found_fait:
+                    stop = True
+            elif c2.ref == "*" and c1.ref == "*":
+                for e in bfn_faits:
+                    if type(e) != Concept:
+                        c1_2 = e[0]
+                        r1_2 = e[1]
+                        c2_2 = e[2]
+                        if c1.name == c1_2.name and c2.name == c2_2.name and r1.name == r1_2.name and "*" != c1_2.ref and c2_2.ref != "*":
+                            found_fait = True
+                            answer.append(e)
+                if not found_fait:
+                    stop = True
+
+        elif type(element) == Concept:
+            if element.ref != "*":
+                for e in bfn:
+                    if type(e) == Concept:
+                        if element.name == e.name and e.ref != "*":
+                            found_fait = True
+                            answer.append(e)
+                            break
+                if not found_fait:
+                    stop = True
+            else:
+                for e in bfn:
+                    if type(e) == Concept:
+                        if element.name == e.name and e.ref != "*":
+                            found_fait = True
+                            answer.append(e)
+                if not found_fait:
+                    stop = True
+        if stop or len(answer) == 0: return False
+        answers.append(answer)
+
+
+    return answers
+
+
+def Simplification(arr):
+    arr = objs_to_faits(arr)
+
+    stop = False
+    while not stop:
+        for element in arr:
+            delete_arr = []
+            found = False
+            for e in arr:
+                if type(element) == type(e) == Concept:
+                    if element.name == e.name and element != e:
+                        delete_arr.append(e)
+                        found = True
+                elif type(element) != type(e) and type(e) == Concept and element != e:
+                    if (element[0].name == e.name and element[0].ref == e.ref) or (element[2].name == e.name and element[2].ref == e.ref):
+                        delete_arr.append(e)
+                        found = True
+                elif type(element) == type(e):
+                    if element != e and element[0].name == e[0].name and element[0].ref == e[0].ref and element[1].name == e[1].name and element[2].name == e[2].name and element[2].ref == e[2].ref:
+                        delete_arr.append(e)
+                        found = True
+            if found:
+                break
+        if found:
+            for element in delete_arr:
+                arr.remove(element)
+        if not found:
+            stop = True
+    arr = get_objs(arr)
+    return arr
+
+
+def filter_answers(answers):
+    for i, element in enumerate(answers):
+        print(i)
+        for j, e in enumerate(element):
+            if type(e) == Concept:
+                pass
+            else:
+                pass
+            print(" " * 10, j)
+            print(e)
+
+    i = 0
+    lines = []
+    while i <= len(answers):
+        delete_answer = []
+        if len(answers) > 1:
+            for element in answers[i]:
+                found = False
+
+                for next_element in answers[i + 1]:
+                    if element[-1] == next_element[0]:
+                        found = True
+
+                if not found:
+                    delete_answer.append(element)
+            for r in delete_answer:
+                answers[i].remove(r)
+        i += 1
+        if i+1 == len(answers): break
+
+    l = []
+    for i, element in enumerate(answers):
+        print(i)
+        for j, e in enumerate(element):
+            l.append(e)
+    join = False
+    stop = False
+    while not stop:
+        join_element = []
+        join = False
+        for element in l:
+            for e in l:
+                if e != element and element[0] == e[-1]:
+                    join = True
+                    join_element = [l.index(e), l.index(element)]
+                    break
+            if join: break
+        if join:
+            dont_know = False
+            for p, ja in enumerate(l):
+                if l[join_element[0]][-1] == ja[0] and p != join_element[0]:
+                    if not dont_know:
+                        dont_know = True
+                        continue
+                    a = []
+                    for k in l[join_element[0]]:
+                        a.append(k)
+                    l.append(a)
+                    break
+            for k in l[join_element[1]][1:]:
+                l[join_element[0]].append(k)
+            l.pop(join_element[1])
+        if not join: stop = True
+    print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+    k = []
+    for i in l:
+        print(i)
+        k.append(Copy(i))
+
+    answers_obj = get_objs(k)
+
+    return answers_obj, l
+
+
+def chainge_avant(init):
+    print("chainage avant")
+    stop = False
+    add_conclusion_all = []
+    while not stop:
+        add_conclusion = []
+        regle_applique = False
+        for regle in init.br_main_list:
+
+            result = Projection(regle["premise"], init.BFN)
+            if result != False:
+                result = filter_answers(result)[1]
+                if len(result) != 0:
+                    conclusion = regle["conclusion"]
+                    if type(conclusion) != Concept:
+                        for answer in result:
+                            conclusion_copy = Copy(conclusion)
+                            for element in conclusion_copy:
+                                if type(element) == Concept and element.ref == "*":
+                                    for ans in answer:
+                                        if ans.name == element.name:
+                                            Restriction_1(element, ans)
+                                            break
+                            in_this_same = False
+                            for same in add_conclusion_all:
+                                if len(same) == len(conclusion_copy):
+                                    added = True
+                                    for index, s in enumerate(same):
+                                        if type(s) == Concept:
+                                            if not (same[index].name == conclusion_copy[index].name and same[index].ref == conclusion_copy[index].ref):
+                                                added = False
+                                                break
+                                        else:
+                                            if not (same[index].name == conclusion_copy[index].name):
+                                                added = False
+                                                break
+                                    if added:
+                                        in_this_same = True
+                                if in_this_same:
+                                    break
+                            if not in_this_same:
+                                add_conclusion_all.append(conclusion_copy)
+                                add_conclusion.append(conclusion_copy)
+                                regle_applique = True
+
+
+        if regle_applique:
+            for add in add_conclusion:
+                if type(add) != Concept:
+                    for a in add:
+                        init.BFN.append(a)
+            init.BFN = Simplification(init.BFN)
+            for concept_1 in init.BFN:
+                if type(concept_1) == Concept:
+                    for concept_2 in init.BFN:
+                        if type(concept_2) == Concept and concept_1 != concept_2 and concept_1.name == concept_2.name and concept_1.ref == concept_2.ref:
+                            init.BFN = Jointure(concept_1, concept_2, init.BFN)[1]
+        else:
+            stop = True
+
 
 
